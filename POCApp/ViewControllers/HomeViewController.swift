@@ -15,24 +15,23 @@ class HomeViewController: UIViewController {
     var rowData = [Row]()
     var refreshControl = UIRefreshControl()
 
-    @objc func refresh(_ sender: AnyObject) {
-        tableView.reloadData()
-        self.refreshControl.endRefreshing()
+    @objc func refreshScreen(_ sender: AnyObject) {
+        fetchHomeData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        refreshControlFunc()
+        addRefreshControl()
         configureTableView()
         setupConstraints()
         fetchHomeData()
     }
     
     //Function for Pull To Referesh
-    func refreshControlFunc() {
+    func addRefreshControl() {
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
-        tableView.addSubview(refreshControl)
+        refreshControl.addTarget(self, action: #selector(self.refreshScreen(_:)), for: .valueChanged)
+        tableView.refreshControl = refreshControl
     }
     
     //Configure table view properties
@@ -58,8 +57,9 @@ class HomeViewController: UIViewController {
     func fetchHomeData() {
         self.fetchHomeDetails { (homeData, error) in
             DispatchQueue.main.async {
+                self.refreshControl.endRefreshing()
                 guard let homeData = homeData else {
-                    self.showAlert(withMessage: "Request Failed")
+                    self.showAlert(withMessage: error?.localizedDescription ?? "Request failed")
                     return
                 }
                 self.displayHomeData(data: homeData)

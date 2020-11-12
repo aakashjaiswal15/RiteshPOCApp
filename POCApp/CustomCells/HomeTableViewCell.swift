@@ -35,8 +35,8 @@ class HomeTableViewCell: UITableViewCell {
         
         wikiImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
         wikiImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        wikiImageView.widthAnchor.constraint(equalToConstant: 58).isActive = true
-        wikiImageView.heightAnchor.constraint(equalToConstant: 58).isActive = true
+        wikiImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        wikiImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         titleLabel.leadingAnchor.constraint(equalTo: wikiImageView.trailingAnchor, constant: 8).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
