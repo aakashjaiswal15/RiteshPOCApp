@@ -15,6 +15,8 @@
 		25AB991F25546B8E0001C65E /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AB991E25546B8E0001C65E /* HomeTableViewCell.swift */; };
 		25AB992125546C0B0001C65E /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AB992025546C0B0001C65E /* HomeModel.swift */; };
 		25AB992525546C3D0001C65E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AB992425546C3D0001C65E /* HomeViewController.swift */; };
+		25C98D9B255EEAA600BC0FF0 /* UrlSessionProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C98D9A255EEAA600BC0FF0 /* UrlSessionProtocolMock.swift */; };
+		25C98D9D255EEAB500BC0FF0 /* UrlSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C98D9C255EEAB500BC0FF0 /* UrlSessionMock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		25AB991E25546B8E0001C65E /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		25AB992025546C0B0001C65E /* HomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModel.swift; sourceTree = "<group>"; };
 		25AB992425546C3D0001C65E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		25C98D9A255EEAA600BC0FF0 /* UrlSessionProtocolMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlSessionProtocolMock.swift; sourceTree = "<group>"; };
+		25C98D9C255EEAB500BC0FF0 /* UrlSessionMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlSessionMock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 		187BEC5C255815D400DD53E5 /* POCAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				25C98D99255EE92600BC0FF0 /* MockProtocols */,
+				25C98D98255EE91100BC0FF0 /* MockClasses */,
 				187BEC5D255815D400DD53E5 /* POCAppTests.swift */,
 				187BEC6B25581CBB00DD53E5 /* NetworkCallTests.swift */,
 				187BEC5F255815D400DD53E5 /* Info.plist */,
@@ -124,6 +130,22 @@
 				25AB991E25546B8E0001C65E /* HomeTableViewCell.swift */,
 			);
 			path = CustomCells;
+			sourceTree = "<group>";
+		};
+		25C98D98255EE91100BC0FF0 /* MockClasses */ = {
+			isa = PBXGroup;
+			children = (
+				25C98D9C255EEAB500BC0FF0 /* UrlSessionMock.swift */,
+			);
+			path = MockClasses;
+			sourceTree = "<group>";
+		};
+		25C98D99255EE92600BC0FF0 /* MockProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				25C98D9A255EEAA600BC0FF0 /* UrlSessionProtocolMock.swift */,
+			);
+			path = MockProtocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,7 +248,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25C98D9D255EEAB500BC0FF0 /* UrlSessionMock.swift in Sources */,
 				187BEC6C25581CBB00DD53E5 /* NetworkCallTests.swift in Sources */,
+				25C98D9B255EEAA600BC0FF0 /* UrlSessionProtocolMock.swift in Sources */,
 				187BEC5E255815D400DD53E5 /* POCAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

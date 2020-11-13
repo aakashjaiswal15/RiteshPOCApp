@@ -16,7 +16,7 @@ class HomeViewController: UIViewController {
     var refreshControl = UIRefreshControl()
 
     @objc func refreshScreen(_ sender: AnyObject) {
-        fetchHomeData()
+        fetchData()
     }
     
     override func viewDidLoad() {
@@ -24,7 +24,7 @@ class HomeViewController: UIViewController {
         addRefreshControl()
         configureTableView()
         setupConstraints()
-        fetchHomeData()
+        fetchData()
     }
     
     //Function for Pull To Referesh
@@ -54,8 +54,8 @@ class HomeViewController: UIViewController {
     }
 
     //Fetch data
-    func fetchHomeData() {
-        self.fetchHomeDetails { (homeData, error) in
+    func fetchData() {
+        self.fetchDataDetails { (homeData, error) in
             DispatchQueue.main.async {
                 self.refreshControl.endRefreshing()
                 guard let homeData = homeData else {
@@ -83,7 +83,7 @@ class HomeViewController: UIViewController {
     func fetchImage(indexPath: IndexPath) {
         let imageURL = rowData[indexPath.row].imageURL ?? ""
         if let url = URL(string: imageURL) {
-            self.fetchWikiImage(url: url) { [unowned self] (image, error) in
+            self.fetchImageDetails(url: url) { [unowned self] (image, error) in
                 DispatchQueue.main.async {
                     guard let image = image else {
                         return
@@ -97,7 +97,7 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController {
-    func fetchHomeDetails(_ callback: ((Home?, Error?) -> Void)?) {
+    func fetchDataDetails(_ callback: ((Home?, Error?) -> Void)?) {
         guard let url = URL(string: "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts") else {
             callback?(nil, NetworkError.invalidRequest)
             return
@@ -120,7 +120,7 @@ extension HomeViewController {
         task.resume()
     }
     
-    func fetchWikiImage(url: URL, _ callback: ((UIImage?, Error?) -> Void)?) {
+    func fetchImageDetails(url: URL, _ callback: ((UIImage?, Error?) -> Void)?) {
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else {
                 callback?(nil, NetworkError.invalidResponse)

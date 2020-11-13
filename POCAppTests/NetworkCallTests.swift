@@ -14,10 +14,15 @@ import Foundation
 class NetworkCallTests: XCTestCase {
 
     var httpClient: HttpClient!
+    var viewControllerUnderTest: HomeViewController!
     let session = URLSessionMock()
+    var sessionUnderTest: URLSession!
     override func setUp() {
         super.setUp()
         httpClient = HttpClient(session: session)
+        sessionUnderTest = URLSession(configuration: .default)
+        self.viewControllerUnderTest = HomeViewController()
+        self.viewControllerUnderTest.viewDidLoad()
     }
 
     
@@ -32,41 +37,51 @@ class NetworkCallTests: XCTestCase {
             }
         XCTAssert(dataTask.resumeWasCalled)
     }
-}
-
-class URLSessionMock: URLSessionProtocol {
-    var nextDataTask = MockURLSessionDataTask()
-    private (set) var lastURL: URL?
-    func dataTask(with request: NSURLRequest, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol {
-        lastURL = request.url
-        return nextDataTask
-    }
-}
-
-class MockURLSessionDataTask: URLSessionDataTaskProtocol {
-    private (set) var resumeWasCalled = false
-    func resume() {
-        resumeWasCalled = true
-    }
-}
-
-class HttpClient {
-    typealias completeClosure = ( _ data: Data?, _ error: Error?)->Void
-    private let session: URLSessionProtocol
-    init(session: URLSessionProtocol) {
-        self.session = session
-    }
-    func get( url: URL, callback: @escaping completeClosure ) {
-        let request = NSMutableURLRequest(url: url)
-        let task = session.dataTask(with: request as NSURLRequest) { (data, response, error) in
-            callback(data, error)
+    
+    func test_networkCallStatus() {
+        let url =
+            URL(string: "https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/facts")
+        let promise = expectation(description: "Status code: 200")
+        
+        let dataTask = sessionUnderTest.dataTask(with: url!) { data, response, error in
+            if let error = error {
+                XCTFail("Error: \(error.localizedDescription)")
+                return
+            } else if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                if statusCode == 200 {
+                    promise.fulfill()
+                } else {
+                    XCTFail("Status code: \(statusCode)")
+                }
+            }
         }
-        task.resume()
+        dataTask.resume()
+        wait(for: [promise], timeout: 5)
+    }
+    
+    func test_fetchData() {
+        let promise = expectation(description: "Data is not nil")
+        viewControllerUnderTest.fetchDataDetails { (homeData, error) in
+                guard homeData != nil else {
+                    XCTFail("Unable to fetch data")
+                    return
+                }
+                promise.fulfill()
+            }
+        wait(for: [promise], timeout: 5)
+    }
+    
+    func test_fetchImage() {
+        let promise = expectation(description: "Image fetched successfully ")
+        let urlString = "http://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/American_Beaver.jpg/220px-American_Beaver.jpg"
+        let url = URL(string: urlString)
+        viewControllerUnderTest.fetchImageDetails(url: url!) {(image, error) in
+            guard image != nil else {
+                XCTFail("Unable to fetch image")
+                return
+            }
+            promise.fulfill()
+        }
+        wait(for: [promise], timeout: 5)
     }
 }
-
-protocol URLSessionProtocol { typealias DataTaskResult = (Data?, URLResponse?, Error?) -> Void
-    func dataTask(with request: NSURLRequest, completionHandler: @escaping DataTaskResult) -> URLSessionDataTaskProtocol
-}
-
-protocol URLSessionDataTaskProtocol { func resume() }
